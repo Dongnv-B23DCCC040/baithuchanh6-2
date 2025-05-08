@@ -4,6 +4,10 @@ import destinations, { Destination } from '../../data/destinations';
 
 const { Option } = Select;
 
+// Lấy min/max giá động từ dữ liệu
+const minPrice = Math.min(...destinations.map(d => d.price));
+const maxPrice = Math.max(...destinations.map(d => d.price));
+
 type SortType = '' | 'price_asc' | 'price_desc' | 'rating_asc' | 'rating_desc';
 
 const sortOptions = [
@@ -16,7 +20,7 @@ const sortOptions = [
 const HomePage: React.FC = () => {
   const [filteredDestinations, setFilteredDestinations] = useState<Destination[]>(destinations);
   const [typeFilter, setTypeFilter] = useState<string>('all');
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([minPrice, maxPrice]);
   const [ratingFilter, setRatingFilter] = useState<number>(0);
   const [sortType, setSortType] = useState<SortType>('');
 
@@ -77,9 +81,9 @@ const HomePage: React.FC = () => {
         </Select>
         <Slider
           range
-          defaultValue={[0, 1000]}
-          min={0}
-          max={1000}
+          defaultValue={[minPrice, maxPrice]}
+          min={minPrice}
+          max={maxPrice}
           style={{ width: 200 }}
           onChange={handlePriceChange}
         />
